@@ -41,15 +41,4 @@ class ControlledInterventionSeries:
         return stds
 
     def sample_sizes(self):
-        sample_sizes = {}
-        series_before = self.series[:self.intervention_index]
-        series_after = self.series[self.intervention_index:]
-        stds["series"] = np.array([self.series.std(), series_before.std(), series_after.std()])
-
-        control_series_before = self.control_series[:self.intervention_index]
-        control_series_after = self.control_series[self.intervention_index:]
-        stds["control_series"] = np.array(
-            [self.control_series.std(), control_series_before.std(), control_series_after.std()]
-        )
-
-        return stds
+        raise NotImplementedError()
