@@ -4,9 +4,11 @@ import numpy as np
 from pytest import approx
 
 import sys
+
 sys.path.append("../")
 
 from src.series import ControlledInterventionSeries
+
 
 def test_means():
     series = ControlledInterventionSeries(

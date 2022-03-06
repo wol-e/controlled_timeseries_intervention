@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class ControlledInterventionSeries:
     def __init__(self, series, control_series, intervention_index):
         self.series = series
