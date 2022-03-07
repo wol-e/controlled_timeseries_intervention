@@ -62,6 +62,9 @@ class ControlledInterventionSeries:
             alternative=alternative
         )
 
+    def ancova(self):
+        pass
+
     def get_split_series(self):
         return self.series[:self.intervention_index], self.series[self.intervention_index:]
 
