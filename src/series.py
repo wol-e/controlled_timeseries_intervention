@@ -123,7 +123,7 @@ class ControlledInterventionSeries:
         diff = self.difference()
         return diff[:self.intervention_index], diff[self.intervention_index:]
 
-    def plot(self, title="Intervention Analysis", show=False):
+    def plot(self, title="Intervention Analysis", return_fig=False):
         df = pd.DataFrame({
             "series": self.series,
             "control_series": self.control_series
@@ -137,7 +137,7 @@ class ControlledInterventionSeries:
             annotation_text="intervention",
         )
 
-        if not show:
+        if return_fig:
             return fig
 
         fig.show()
