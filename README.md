@@ -54,4 +54,4 @@ Rsults from ANCOVA:
 2        Residual  29.935682  97        NaN       NaN       NaN
 ```
 
-For some more insughtful examples have a look at [this notebook](examples.ipynb).
+For some more insightful examples have a look at [this notebook](examples.ipynb).
