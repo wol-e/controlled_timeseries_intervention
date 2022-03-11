@@ -47,6 +47,9 @@ class ControlledInterventionSeries:
     def difference(self):
         return self.series - self.control_series
 
+    def ratio(self):
+        return self.series / self.control_series
+
     def sample_sizes(self):
         series_before, series_after = self.get_split_series()
         return np.array([len(self.series), len(series_before), len(series_after)])
@@ -75,8 +78,15 @@ class ControlledInterventionSeries:
             std1 = diff_before.std()
             std2 = diff_after.std()
 
+        elif apply_to == "ratio":
+            ratio_before, ratio_after = self.get_split_ratio()
+            mean1 = ratio_before.mean()
+            mean2 = ratio_after.mean()
+            std1 = ratio_before.std()
+            std2 = ratio_after.std()
+
         else:
-            raise ValueError("'apply_to' must be set se either 'series', 'control_series' or 'difference'")
+            raise ValueError("'apply_to' must be set se either 'series', 'control_series', 'difference' or 'ratio'")
 
         return ttest_ind_from_stats(
             mean1=mean1,
@@ -123,6 +133,10 @@ class ControlledInterventionSeries:
         diff = self.difference()
         return diff[:self.intervention_index], diff[self.intervention_index:]
 
+    def get_split_ratio(self):
+        ratio = self.ratio()
+        return ratio[:self.intervention_index], ratio[self.intervention_index:]
+
     def plot(self, title="Intervention Analysis", return_fig=False):
         df = pd.DataFrame({
             "series": self.series,
@@ -148,6 +162,11 @@ class ControlledInterventionSeries:
         mean_diff_after = diff_after.mean()
         pval_diff = self.ttest_ind_from_stats(apply_to="difference").pvalue
 
+        ratio_before, ratio_after = self.get_split_ratio()
+        mean_ratio_before = ratio_before.mean()
+        mean_ratio_after = ratio_after.mean()
+        pval_ratio = self.ttest_ind_from_stats(apply_to="ratio").pvalue
+
         series_before, series_after = self.get_split_series()
         mean_series_before = series_before.mean()
         mean_series_after = series_after.mean()
@@ -170,11 +189,14 @@ The means of control-series before and after intervention are
 
 The mean difference of the series and control-series before and after is
 \tBefore: {mean_diff_before}, After: {mean_diff_after}.
+
+The mean ratio of the series and control-series before and after is
+\tBefore: {mean_ratio_before}, After: {mean_ratio_after}.
 ___________________
 Results from ttest:
 
 The p-values for significance of differences in means before and after intervention are
-\tSeries: {pval_series}, Control Series: {pval_control_series}, Difference: {pval_diff}.
+\tSeries: {pval_series}, Control Series: {pval_control_series}, Difference: {pval_diff}, Ratio: {pval_ratio}.
 
 ___________________
 Rsults from ANCOVA:

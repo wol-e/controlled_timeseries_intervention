@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from numpy.testing import assert_array_equal
+from numpy.testing import assert_array_equal, assert_array_almost_equal
 from pytest import approx
 
 import sys
@@ -45,3 +45,16 @@ def test_get_split_differnce():
 
     assert_array_equal(diff[0], np.array([-2, -2, -2, -2]))
     assert_array_equal(diff[1], np.array([-2, -5]))
+
+def test_get_split_ratio():
+    series = ControlledInterventionSeries(
+        series=pd.Series([1, 2, 1, 2, 1, 2]),
+        control_series=pd.Series([3, 4, 3, 4, 3, 7]),
+        intervention_index=4
+    )
+
+    ratio = series.get_split_ratio()
+
+    assert_array_almost_equal(ratio[0], np.array([1 / 3, 2 / 4, 1 / 3, 2 / 4]))
+    assert_array_almost_equal(ratio[1], np.array([1 / 3, 2 / 7]))
+
